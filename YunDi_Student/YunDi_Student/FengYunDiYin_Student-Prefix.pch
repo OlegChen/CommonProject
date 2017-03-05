@@ -1,0 +1,108 @@
+//
+//  FengYunDi_Student-Prefix.pch
+//  FengYunDi_Student
+//
+//  Created by Chen on 16/7/28.
+//  Copyright © 2016年 Chen. All rights reserved.
+//
+
+#ifndef FengYunDi_Student_Prefix_pch
+#define FengYunDi_Student_Prefix_pch
+
+
+//如果release状态就不执行NSLog函数
+#ifndef __OPTIMIZE__
+#define NSLog(...) NSLog(__VA_ARGS__)
+#else
+# define NSLog(...) {}
+#endif
+
+#ifdef __OBJC__
+#import "RegExCategories.h"
+#endif
+
+//引用
+#ifndef    weakify
+ #if __has_feature(objc_arc)
+
+ #define weakify( x ) \
+ _Pragma("clang diagnostic push") \
+ _Pragma("clang diagnostic ignored \"-Wshadow\"") \
+ autoreleasepool{} __weak __typeof__(x) __weak_##x##__ = x; \
+ _Pragma("clang diagnostic pop")
+
+ #else
+
+ #define weakify( x ) \
+ _Pragma("clang diagnostic push") \
+ _Pragma("clang diagnostic ignored \"-Wshadow\"") \
+ autoreleasepool{} __block __typeof__(x) __block_##x##__ = x; \
+ _Pragma("clang diagnostic pop")
+
+ #endif
+ #endif
+
+ #ifndef    strongify
+ #if __has_feature(objc_arc)
+
+ #define strongify( x ) \
+ _Pragma("clang diagnostic push") \
+ _Pragma("clang diagnostic ignored \"-Wshadow\"") \
+ try{} @finally{} __typeof__(x) x = __weak_##x##__; \
+ _Pragma("clang diagnostic pop")
+
+ #else
+
+ #define strongify( x ) \
+ _Pragma("clang diagnostic push") \
+ _Pragma("clang diagnostic ignored \"-Wshadow\"") \
+ try{} @finally{} __typeof__(x) x = __block_##x##__; \
+ _Pragma("clang diagnostic pop")
+
+ #endif
+ #endif
+
+//提示
+#define TipAlertVeiw(_S_, ...)     [[[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:(_S_), ##__VA_ARGS__] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil] show]
+
+
+//设备型号
+#define IS_IPAD     [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad
+#define IS_IPHONE   [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone
+#define IS_IPHONE_4 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double )480) < DBL_EPSILON )
+#define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double )568) < DBL_EPSILON )
+#define IS_IPHONE_6 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double )667) < DBL_EPSILON )
+#define IS_IPHONE_6_PLUS (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double )960) < DBL_EPSILON )
+
+//系统版本
+#define IS_IOS_VERSION   floorf([[UIDevice currentDevice].systemVersion floatValue]
+#define IS_IOS_5    floorf([[UIDevice currentDevice].systemVersion floatValue]) ==5.0 ? 1 : 0
+#define IS_IOS_6    floorf([[UIDevice currentDevice].systemVersion floatValue]) ==6.0 ? 1 : 0
+#define IS_IOS_7    floorf([[UIDevice currentDevice].systemVersion floatValue]) ==7.0 ? 1 : 0
+#define IS_IOS_8    floorf([[UIDevice currentDevice].systemVersion floatValue]) ==8.0 ? 1 : 0
+#define IS_IOS_9    floorf([[UIDevice currentDevice].systemVersion floatValue]) ==9.0 ? 1 : 0
+
+
+#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
+#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+
+#define PaddingLeftWidth 10
+
+#define ScaleFrom_iPhone5_Desgin(_X_) (_X_ * (SCREEN_WIDTH/320))
+
+
+
+
+
+//框架
+
+#import "Masonry.h"
+#import "UITableView+Common.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "UIColor+expanded.h"
+#import "UIImage+Image.h"
+#import "UIView+Common.h"
+
+
+#endif /* FengYunDi_Student_Prefix_pch */
